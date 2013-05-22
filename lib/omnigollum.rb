@@ -78,23 +78,9 @@ module Omnigollum
     def show_login
       options = settings.send(:omnigollum)
          
-      # Don't bother showing the login screen, just redirect
-      if options[:provider_names].count == 1
-        if !request.params['origin'].nil?
-          origin = request.params['origin']
-        elsif !request.path.nil?
-          origin = request.path
-        else
-          origin = '/'
-        end
-         
-        redirect options[:route_prefix] + '/auth/' + options[:provider_names].first.to_s + "?origin=" +
-           CGI.escape(origin)
-      else
-         auth_config
-         require options[:path_views] + '/login'
-         halt mustache Omnigollum::Views::Login
-      end
+      auth_config
+      require options[:path_views] + '/login'
+      halt mustache Omnigollum::Views::Login
     end
 
     def commit_message
@@ -245,10 +231,17 @@ module Omnigollum
             user = Omnigollum::Models::OmniauthUser.new(request.env['omniauth.auth'], options)
             
             # Check authorized users
-            if !options[:authorized_users].empty? && !options[:authorized_users].include?(user.email) && 
-               !options[:authorized_users].include?(user.nickname)
+            # if !options[:authorized_users].empty? && !options[:authorized_users].include?(user.email) && 
+            #    !options[:authorized_users].include?(user.nickname)
+            #   @title   = 'Authorization failed'
+            #   @subtext = 'User was not found in the authorized users list'
+            #   @auth_params = "?origin=#{CGI.escape(request.env['omniauth.origin'])}" unless request.env['omniauth.origin'].nil?
+            #   show_login
+            # end
+				
+            if !request_env['omniauth.auth'].credentials.team_member?
               @title   = 'Authorization failed'
-              @subtext = 'User was not found in the authorized users list'
+              @subtext = 'User was not in the correct team'
               @auth_params = "?origin=#{CGI.escape(request.env['omniauth.origin'])}" unless request.env['omniauth.origin'].nil?
               show_login
             end
