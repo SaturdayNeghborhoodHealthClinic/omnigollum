@@ -122,7 +122,7 @@ module Omnigollum
       :path_templates => "#{dir}/templates",
       :default_name   => nil,
       :default_email  => nil,
-      :provider_names => []
+      :provider_names => [],
       :authorized_users => []
     }
       
@@ -239,9 +239,9 @@ module Omnigollum
             #   show_login
             # end
 				
-            if !request_env['omniauth.auth'].credentials.team_member?
+            if !request.env['omniauth.auth'].credentials.organization_member?
               @title   = 'Authorization failed'
-              @subtext = 'User was not in the correct team'
+              @subtext = 'User was not part of the RosettaCommons organization'
               @auth_params = "?origin=#{CGI.escape(request.env['omniauth.origin'])}" unless request.env['omniauth.origin'].nil?
               show_login
             end
