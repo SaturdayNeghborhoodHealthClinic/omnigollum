@@ -225,7 +225,7 @@ module Omnigollum
         show_login
       end
 
-      app.before options[:route_prefix] + '/auth/githubteammember/callback' do
+      app.before options[:route_prefix] + '/auth/:name/callback' do
         begin
           if !request.env['omniauth.auth'].nil? 
             user = Omnigollum::Models::OmniauthUser.new(request.env['omniauth.auth'], options)
