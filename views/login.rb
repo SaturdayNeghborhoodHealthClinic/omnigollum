@@ -17,7 +17,7 @@ module Omnigollum
           @auth[:providers].each do |name|
             provider_attr = {
               :name => OmniAuth::Utils.camelize(name),
-              :provider_url => @auth[:route_prefix] + "/auth/#{name}" + (defined?(@auth_params) ? @auth_params : '') 
+              :provider_url => "/docs " + @auth[:route_prefix] + "/auth/#{name}" + (defined?(@auth_params) ? @auth_params : '') 
             }
             name = name.to_s
             if has_logo?(logo_name = name) || (logo_name = @auth[:logo_missing])
