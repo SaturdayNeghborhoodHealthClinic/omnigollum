@@ -68,6 +68,7 @@ module Omnigollum
       
       @auth = {
         :route_prefix => options[:route_prefix],
+	:base_path    => options[:base_path],
         :providers    => options[:provider_names],
         :path_images  => options[:path_images],
         :logo_suffix  => options[:logo_suffix],
@@ -272,6 +273,7 @@ module Omnigollum
       end
       
       app.before options[:route_prefix] + '/images/:image.png' do
+#      app.before '/docs/images/:image.png' do
         content_type :png
         send_file options[:path_images] + '/' + params[:image] + '.png'
       end
