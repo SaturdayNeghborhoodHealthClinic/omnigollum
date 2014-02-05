@@ -103,6 +103,7 @@ module Omnigollum
       
     @default_options = {
       :protected_routes => [
+        '/*',
         '/revert/*',
         '/revert',
         '/create/*',
