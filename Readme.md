@@ -6,7 +6,7 @@
 
 Clone into your ruby library path.
 
-    git clone git://github.com/arr2036/omnigollum.git
+    git clone git://github.com/SaturdayNeghborhoodHealthClinic/omnigollum.git
 
 ## Configuration
 
