@@ -233,20 +233,20 @@ module Omnigollum
             user = Omnigollum::Models::OmniauthUser.new(request.env['omniauth.auth'], options)
             
             # Check authorized users
-            # if !options[:authorized_users].empty? && !options[:authorized_users].include?(user.email) && 
-            #    !options[:authorized_users].include?(user.nickname)
-            #   @title   = 'Authorization failed'
-            #   @subtext = 'User was not found in the authorized users list'
-            #   @auth_params = "?origin=#{CGI.escape(request.env['omniauth.origin'])}" unless request.env['omniauth.origin'].nil?
-            #   show_login
-            # end
-				
-            if !request.env['omniauth.auth'].credentials.organization_member?
+            if !options[:authorized_users].empty? && !options[:authorized_users].include?(user.email) && 
+               !options[:authorized_users].include?(user.nickname)
               @title   = 'Authorization failed'
-              @subtext = 'User was not part of the RosettaCommons organization'
+              @subtext = 'User was not found in the authorized users list'
               @auth_params = "?origin=#{CGI.escape(request.env['omniauth.origin'])}" unless request.env['omniauth.origin'].nil?
               show_login
             end
+				
+            # if !request.env['omniauth.auth'].credentials.team_member?
+            #   @title   = 'Authorization failed'
+            #   @subtext = 'User was not part of the appropriate team'
+            #   @auth_params = "?origin=#{CGI.escape(request.env['omniauth.origin'])}" unless request.env['omniauth.origin'].nil?
+            #   show_login
+            # end
             
             session[:omniauth_user] = user
             
